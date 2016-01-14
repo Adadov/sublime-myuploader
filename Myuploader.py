@@ -3,6 +3,17 @@ import re, os
 import pprint
 import subprocess
 
+class MyuploaderBkpfile(sublime_plugin.WindowCommand):
+    def run(self):
+        self.debug = os.getenv("SUBDEBUG", False)
+
+        view = self.window.active_view()
+        fullname = view.file_name()
+
+        proc = subprocess.Popen(['cp', fullname, fullname+".bkp"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc.wait()
+
+
 class MyuploaderToggledebug(sublime_plugin.WindowCommand):
     def run(self):
         if not os.environ["SUBDEBUG"]:
@@ -68,6 +79,14 @@ class MyuploaderSendCommand(sublime_plugin.WindowCommand):
         proc.wait()
         print ('result: %s' % repr(proc.stderr.readline()))
 
+    def printDebug(self, msg):
+        if self.debug == "True":
+            print("[DEBUG] ", msg)
+
+    def printError(self, msg):
+        print("[ERREUR] ", msg)
+
+class MyuploaderDebug(sublime_plugin.WindowCommand):
     def printDebug(self, msg):
         if self.debug == "True":
             print("[DEBUG] ", msg)
