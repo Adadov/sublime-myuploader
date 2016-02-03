@@ -16,7 +16,7 @@ class MyuploaderBkpfile(sublime_plugin.WindowCommand):
 
 class MyuploaderToggledebug(sublime_plugin.WindowCommand):
     def run(self):
-        if not os.environ["SUBDEBUG"]:
+        if not os.getenv("SUBDEBUG", False):
             print("Debug activé")
             os.environ["SUBDEBUG"] = "True"
             return
@@ -67,17 +67,19 @@ class MyuploaderSendCommand(sublime_plugin.WindowCommand):
 
         self.printDebug ("Destination: "+destination)
 
-        print("Sending file", filename, "to", serverName+":"+destination, "...")
+        print("Sending file", fullname, "to", serverName+":"+destination, "...")
 
         if not destination:
             self.printError("Destination non définie !")
             return
 
-#        ret = view.window().run_command('exec', {"cmd": ["/usr/bin/scp", filename, serverName+":"+destination]})
-#        print(ret)
-        proc = subprocess.Popen(['scp', filename, serverName+":"+destination], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(['scp', fullname, serverName+":"+destination], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         proc.wait()
-        print ('result: %s' % repr(proc.stderr.readline()))
+        if proc.returncode == 0:
+            print("File %s sent successfully !!" % filename)
+        else:
+            self.printError("File not sent")
+            print ('result: %s' % repr(proc.stderr.readline()))
 
     def printDebug(self, msg):
         if self.debug == "True":
