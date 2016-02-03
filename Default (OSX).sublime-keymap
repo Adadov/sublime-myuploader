@@ -1,0 +1,5 @@
+[
+	{ "keys": ["super+f5"], "command": "myuploader_bkpfile" },
+	{ "keys": ["super+f10"], "command": "myuploader_send"},
+	{ "keys": ["super+f11"], "command": "myuploader_toggledebug"},
+]
