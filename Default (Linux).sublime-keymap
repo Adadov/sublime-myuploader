@@ -1,5 +1,7 @@
 [
 	{ "keys": ["ctrl+f5"], "command": "myuploader_bkpfile" },
+	{ "keys": ["ctrl+f6"], "command": "myuploader_mkexec" },
+	{ "keys": ["ctrl+shift+f10"], "command": "myuploader_up2dl" },
 	{ "keys": ["ctrl+f10"], "command": "myuploader_send"},
 	{ "keys": ["ctrl+f11"], "command": "myuploader_toggledebug"},
 ]
