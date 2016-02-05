@@ -53,6 +53,13 @@ class MyuploaderUp2dlCommand(sublime_plugin.WindowCommand):
             self.printError("Fichier non envoyé")
             print ('Retour: %s' % repr(proc.stderr.readline()))
 
+    def printDebug(self, msg):
+        if self.debug == "True":
+            print("[DEBUG] ", msg)
+
+    def printError(self, msg):
+        print("[ERREUR] ", msg)
+
 class MyuploaderSendCommand(sublime_plugin.WindowCommand):
     def run(self):
         self.debug = os.getenv("SUBDEBUG", False)
