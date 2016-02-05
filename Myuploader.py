@@ -10,23 +10,44 @@ class MyuploaderBkpfile(sublime_plugin.WindowCommand):
         view = self.window.active_view()
         fullname = view.file_name()
 
+        print("Création d'un backup de "+fullname)
+
         proc = subprocess.Popen(['cp', fullname, fullname+".bkp"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         proc.wait()
 
 
-class MyuploaderToggledebug(sublime_plugin.WindowCommand):
+class MyuploaderMkExec(sublime_plugin.WindowCommand):
     def run(self):
-        if not os.getenv("SUBDEBUG", False):
-            print("Debug activé")
-            os.environ["SUBDEBUG"] = "True"
-            return
 
-        if os.environ["SUBDEBUG"] == "True":
-            print("Debug désactivé")
-            os.environ["SUBDEBUG"] = "False"
+        view = self.window.active_view()
+        fullname = view.file_name()
+
+        print("Rend executable "+fullname)
+
+        proc = subprocess.Popen(['chmod', "+X", fullname], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc.wait()
+
+
+class MyuploaderUp2dlCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        self.debug = os.getenv("SUBDEBUG", False)
+
+        view = self.window.active_view()
+        fullname = view.file_name()
+
+        filename = os.path.basename(view.file_name())
+
+        self.printDebug("Fullname: "+fullname)
+
+        print("Envoi de", fullname, "vers dl.adadov.net ...")
+
+        proc = subprocess.Popen(['scp', fullname, "root@dl.adadov.net:/web/adadov.net/dl/"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc.wait()
+        if proc.returncode == 0:
+            print("Fichier %s correctement envoyé !!" % filename)
         else:
-            print("Debug activé")
-            os.environ["SUBDEBUG"] = "True"
+            self.printError("Fichier non envoyé")
+            print ('Retour: %s' % repr(proc.stderr.readline()))
 
 class MyuploaderSendCommand(sublime_plugin.WindowCommand):
     def run(self):
@@ -87,6 +108,20 @@ class MyuploaderSendCommand(sublime_plugin.WindowCommand):
 
     def printError(self, msg):
         print("[ERREUR] ", msg)
+
+class MyuploaderToggledebug(sublime_plugin.WindowCommand):
+    def run(self):
+        if not os.getenv("SUBDEBUG", False):
+            print("Debug activé")
+            os.environ["SUBDEBUG"] = "True"
+            return
+
+        if os.environ["SUBDEBUG"] == "True":
+            print("Debug désactivé")
+            os.environ["SUBDEBUG"] = "False"
+        else:
+            print("Debug activé")
+            os.environ["SUBDEBUG"] = "True"
 
 class MyuploaderDebug(sublime_plugin.WindowCommand):
     def printDebug(self, msg):
