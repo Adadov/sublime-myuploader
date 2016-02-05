@@ -6,6 +6,7 @@ import subprocess
 class MyuploaderBkpfile(sublime_plugin.WindowCommand):
     def run(self):
         self.debug = os.getenv("SUBDEBUG", False)
+        print("====")
 
         view = self.window.active_view()
         fullname = view.file_name()
@@ -18,6 +19,8 @@ class MyuploaderBkpfile(sublime_plugin.WindowCommand):
 
 class MyuploaderMkExec(sublime_plugin.WindowCommand):
     def run(self):
+        self.debug = os.getenv("SUBDEBUG", False)
+        print("====")
 
         view = self.window.active_view()
         fullname = view.file_name()
@@ -31,6 +34,7 @@ class MyuploaderMkExec(sublime_plugin.WindowCommand):
 class MyuploaderUp2dlCommand(sublime_plugin.WindowCommand):
     def run(self):
         self.debug = os.getenv("SUBDEBUG", False)
+        print("====")
 
         view = self.window.active_view()
         fullname = view.file_name()
@@ -52,6 +56,7 @@ class MyuploaderUp2dlCommand(sublime_plugin.WindowCommand):
 class MyuploaderSendCommand(sublime_plugin.WindowCommand):
     def run(self):
         self.debug = os.getenv("SUBDEBUG", False)
+        print("====")
 
         view = self.window.active_view()
         fullname = view.file_name()
